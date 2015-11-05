@@ -31,7 +31,7 @@
 static NSMutableDictionary *saltDatabase;
 
 
-+ (void)storeKey:(NSString *)key forSalt:(Class)class, ...
++ (void)storeKey:(NSString *)key forSalt:(Class)classParam, ...
 {
     if (saltDatabase == nil)
         saltDatabase = [[NSMutableDictionary alloc] init];
@@ -40,10 +40,10 @@ static NSMutableDictionary *saltDatabase;
     
     id eachClass;
     va_list argumentList;
-    if (class) // The first argument isn't part of the varargs list,
+    if (classParam) // The first argument isn't part of the varargs list,
     {
-        classes = [[NSMutableString alloc] initWithString:NSStringFromClass(class)];
-        va_start(argumentList, class); // Start scanning for arguments after class.
+        classes = [[NSMutableString alloc] initWithString:NSStringFromClass(classParam)];
+        va_start(argumentList, classParam); // Start scanning for arguments after class.
         while ((eachClass = va_arg(argumentList, id))) // As many times as we can get an argument of type "id"
             [classes appendString:NSStringFromClass(eachClass)];
         va_end(argumentList);
@@ -52,16 +52,16 @@ static NSMutableDictionary *saltDatabase;
     [saltDatabase setValue:[classes copy] forKey:key];
 }
 
-+ (instancetype)newWithSalt:(Class)class, ...
++ (instancetype)newWithSalt:(Class)classParam, ...
 {
     NSMutableString *classes;
     
     id eachClass;
     va_list argumentList;
-    if (class) // The first argument isn't part of the varargs list,
+    if (classParam) // The first argument isn't part of the varargs list,
     {
-        classes = [[NSMutableString alloc] initWithString:NSStringFromClass(class)];
-        va_start(argumentList, class); // Start scanning for arguments after class.
+        classes = [[NSMutableString alloc] initWithString:NSStringFromClass(classParam)];
+        va_start(argumentList, classParam); // Start scanning for arguments after class.
         while ((eachClass = va_arg(argumentList, id))) // As many times as we can get an argument of type "id"
             [classes appendString:NSStringFromClass(eachClass)];
         va_end(argumentList);
